@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Livros - Adicionar livros</title>
+
+    <link rel="stylesheet" type="text/css" href="/site.css">
+
+    <script type="text/javascript" src="/site.js"></script>
+</head>
+
+<body>
+
+    <form action="/livros/adicionar" method="post">
+
+        <h1>Adicionar Livro</h1>
+
+        <p>Introduza os detalhes do livro</p>
+
+        <hr>
+
+        <label for="nome"><b>Nome:</b></label>
+        <input type="text" placeholder="Introduzir nome" name="nome" required>
+
+        <label for="dataLancamento"><b>Data:</b></label>
+        <input type="text" placeholder="Introduzir data" name="dataLancamento" required>
+
+        <hr>
+
+        <input type="submit" value="Adicionar livro" />
+        <br>
+        <a href="/">Voltar</a>
+    </form>
+
+</body>
+
+</html>
