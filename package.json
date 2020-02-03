@@ -1,0 +1,19 @@
+{
+  "name": "trab2_sd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernandojuniorlopes/Trabalho2_SD.git"
+  },
+  "author": "Fernando Lopes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fernandojuniorlopes/Trabalho2_SD/issues"
+  },
+  "homepage": "https://github.com/fernandojuniorlopes/Trabalho2_SD#readme"
+}
