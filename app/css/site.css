@@ -1,0 +1,74 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+thead {
+    background-color: green;
+    color: white;
+}
+
+.voltar {
+    background-color: green;
+    border-radius: 8px;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.botoes {
+    background-color: #008cba;
+    border-radius: 8px;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+}
+
+.PI {
+    background-color: lightgreen;
+    border-radius: 8px;
+    padding: 8px;
+    text-decoration: none;
+    color: green;
+}
+
+.divSuc {
+    background-color: green;
+    padding: 8px;
+    border-radius: 8px;
+    color: white;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.i {
+    width: 20px;
+}
+
+.detNome {
+    float: left;
+    font-weight: bold;
+}
+
+.det {
+    float: left;
+}
+
+#wrapper {
+    float: left;
+    width: 100%;
+}
