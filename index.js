@@ -1,43 +1,51 @@
-const express = require('express');
-const logger = require('morgan');
-const livros = require('./routes/livros');
-const users = require('./routes/users');
-const bodyParser = require('body-parser');
+const express = require('express'); //O express é uma framework de Node.js minimal e flexível que fornece um conjunto robusto de capacidades para aplicações de web
+const logger = require('morgan'); //É um logger de pedidos HTTP para o Node.js
+const bodyParser = require('body-parser'); //Fazer parse aos corpos que vêm nos pedidos num middleware que ficam disponíveis na propriedade req.body
+const path = require('path'); //Este modulo fornece ferramentas para trabalhar com caminhos de ficheiros e diretorias
+const cookie = require('cookie-parser'); //para poder usar cookies
+const jwt = require('jsonwebtoken'); //é uma norma(RFC 7519) que define uma maneira compacta de transmitir informação entre duas fações como um objeto JSON
 const mongoose = require('./config/database'); //configuração da base de dados
-const path = require('path');
-const cookie = require('cookie-parser');
-const modeloLivro = require('./app/api/models/livros');
-var jwt = require('jsonwebtoken');
+
+const livros = require('./routes/livros'); //
+const users = require('./routes/users'); //
+
+const modeloLivro = require('./app/api/models/livros'); //é necessário para poder introduzir livros
+
 const app = express();
 
 app.set('secretKey', 'nodeRestApi'); // jwt secret token
 
 // conexão ao mongodb
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookie());
+
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/app/views/index.html'));
 });
+
 app.use(express.static(path.join(__dirname, '/app/css')));
+
 app.use(express.static(path.join(__dirname, '/app/javascript')));
 
-// Rota publica
+// Rota publica - qualquer pessoa entra
 app.use('/users', users);
-
-// Rota privada
-app.use('/livros', validateUser, livros);
 app.get('/favicon.ico', function (req, res) {
     res.sendStatus(204);
 });
 
+// Rota privada - e necessário login
+app.use('/livros', validateUser, livros);
+
 //seed data
 var n;
 let listaLivros = [];
+
 modeloLivro.find({}, function (err, livros) {
     if (err) {
-        next(err);
+        res.sendFile(path.join(__dirname + '/app/views/erro.html'));
     } else {
         for (let livro of livros) {
             listaLivros.push({
@@ -48,15 +56,18 @@ modeloLivro.find({}, function (err, livros) {
         }
     }
     n = listaLivros.length;
+
     if (n == 0) {
         console.log('Não existem livros na base de dados.');
         console.log('Inserir dados...');
         seedData();
         return;
     }
+
     console.log('Existem livros na base de dados.');
     console.log('Não é necessário inserir mais.')
 });
+
 function seedData() {
     modeloLivro.create(
         {
@@ -102,14 +113,12 @@ function seedData() {
     );
     console.log('Dados inseridos.');
 }
+
+//função para validar utilizadores
 function validateUser(req, res, next) {
     jwt.verify(req.cookies['token'], req.app.get('secretKey'), function (err, decoded) {
         if (err) {
-            res.json({
-                estado: "error",
-                mensagem: err.message,
-                dado: null
-            });
+            res.sendFile(path.join(__dirname + '/app/views/erro.html'));
         } else {
             // adicionar o id do utilizador ao pedido
             req.body.userId = decoded.id;
@@ -117,21 +126,22 @@ function validateUser(req, res, next) {
         }
     });
 }
+
 // o express não considera 'not found 404' como um erro por isso temos tratar dele explicitamente
 // tratar do erro 404
 app.use(function (req, res, next) {
-    let err = new Error('Não encontrado...');
-    err.status = 404;
-    next(err);
+    res.sendFile(path.join(__dirname + '/app/views/erro.html'));
 });
+
 // tratar de erros
 app.use(function (err, req, res, next) {
     console.log(err);
+
     if (err.status === 404)
-        res.status(404).json({ message: "Não sei onde esta essa pagina... ¯\_(ツ)_/¯" });
+        res.sendFile(path.join(__dirname + '/app/views/erro.html'));
     else
-        res.status(500).json({ message: "Algo não esta bem... ¯\_(ツ)_/¯" });
+        res.sendFile(path.join(__dirname + '/app/views/erro.html'));
 });
-app.listen(3000, function () {
-    console.log('Servidor no port  (•_•) ( •_•)>⌐■-■ (⌐■_■)  3000!');
-});
+
+// Começar o servidor
+app.listen(process.env.PORT || 3000, console.log('Servidor no port  (•_•) ( •_•)>⌐■-■ (⌐■_■)  3000!'));

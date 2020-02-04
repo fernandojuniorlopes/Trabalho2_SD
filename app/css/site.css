@@ -55,6 +55,24 @@ thead {
     margin-right: auto;
 }
 
+.divErr {
+    background-color: red;
+    padding: 8px;
+    border-radius: 8px;
+    color: white;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.PI2 {
+    background-color: lightcoral;
+    border-radius: 8px;
+    padding: 8px;
+    text-decoration: none;
+    color: red;
+}
+
 .i {
     width: 20px;
 }
